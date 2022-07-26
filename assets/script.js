@@ -1,6 +1,7 @@
 var token;
 var trackBuilder = "https://open.spotify.com/embed/track/";
 
+// generates token to authorize api calls with
 function auth() {
   fetch("https://accounts.spotify.com/api/token", {
     method: "POST",
@@ -20,6 +21,7 @@ function auth() {
 
 auth();
 
+// uses spotify's search api and generated token to populate the large and small iframes
 document.getElementById("search-bar").addEventListener("click", function(event) {
   event.preventDefault();
   console.log(token);
