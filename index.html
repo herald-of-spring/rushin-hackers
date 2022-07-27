@@ -8,7 +8,24 @@
   <title>Document</title>
 </head>
 <body>
-  
+  <form>
+    <input id="searchInput" placeholder="Search by band, genre or location here!">
+    <select id="formatInput">
+      <option value="location">Location</option>
+      <option value="genre">Genre</option>
+      <option value="band">Band</option>
+    </select>
+    <!--<select id="genre">
+      <option value="blues">Blues</option>
+      <option value="pop">Pop</option>
+      <option value="rock">Rock</option>
+      <option value="electronic">Electronic</option>
+    </select>-->
+    <button>Search</button>
+  </form>
+  <div id="searchResults">
+    <ul id="toAppend"></ul>
+  </div>
 </body>
 
 <script type="text/javascript" src="./assets/script.js"></script>
