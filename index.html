@@ -8,19 +8,24 @@
   <title>Document</title>
 </head>
 <body>
-  <!-- Sample search bar -->
   <form>
-    <input id="search-content" placeholder="Search!"></input>
-    <button id="search-bar">Search</button>
+    <input id="searchInput" placeholder="Search by band, genre or location here!">
+    <select id="formatInput">
+      <option value="location">Location</option>
+      <option value="genre">Genre</option>
+      <option value="band">Band</option>
+    </select>
+    <!--<select id="genre">
+      <option value="blues">Blues</option>
+      <option value="pop">Pop</option>
+      <option value="rock">Rock</option>
+      <option value="electronic">Electronic</option>
+    </select>-->
+    <button>Search</button>
   </form>
-  <br></br>
-  <!-- large player -->
-  <iframe class="iframe" style="display: block;" width="300" height="380" loading="lazy" frameborder="no">
-  </iframe>
-  <br></br>
-  <!-- small player -->
-  <iframe class="iframe" width="300" height="80" loading="lazy" frameborder="no">
-  </iframe>
+  <div id="searchResults">
+    <ul id="toAppend"></ul>
+  </div>
 </body>
 
 <script type="text/javascript" src="./assets/script.js"></script>
