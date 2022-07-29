@@ -44,6 +44,21 @@ function runSearch() {
         apiUrl = "https://api.spotify.com/v1/search?q=genre:" + searchEl.value;//apiurl = fetch for spotify by genre using genreEl.value goes here
     }
     if (searchFormat === "band") {
+        fetch("https://api.spotify.com/v1/search?q=artist:" + searchEl.value + "&type=artist", {
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        })    
+        .then(function (response) {
+            if (response.ok) {
+              response.json().then(function (data) {
+                console.log(data);
+                genreType = data.artists.items[0].genres[0];
+                console.log(genreType);
+                apiUrl =  "https://api.spotify.com/v1/search?q=genre:" + genreType;
+            })}
+        })
+        
         //runs search for genres linked to searchEl.value and apiurl = fetches from spotify with that genre
     }
     console.log(apiUrl);
@@ -68,8 +83,9 @@ function runSearch() {
 //formatEl.addEventListener("click", vischeck);
 btn.addEventListener("click", runSearch);
 var displayResults = function(results) {
+    listEl.innerHTML = "";
     for (i = 0; i< 5; i++) {
-        var bandName = results[i].artists[0].name;
+        var bandName = results[i].artists[0].name;        
         var listEntry = document.createElement('div');
         var titleEl = document.createElement("span");
         titleEl.textContent = bandName;
@@ -85,22 +101,8 @@ var displayResults = function(results) {
         songEl.loading = "lazy";
         songEl.class = "iframe";
         songEl.style.border = "no";
-        fetch("https://api.spotify.com/v1/search?q=" + bandName + "&type=track", {
-            headers: {
-                "Authorization": "Bearer " + token
-            }
-        })
-        .then(function (response) {
-            if (response.status == 200) {
-                return response.json();
-            }
-        })
-        .then(function (data) {
-            if (data != undefined) {
-                songEl.setAttribute("src", "https://open.spotify.com/embed/track/" + data.tracks.items[0].id);
-            }
-        })
+        songEl.src = "https://open.spotify.com/embed/track/" + results[i].id;
         listEntry.appendChild(songEl);
-        listEl.appendChild(listEntry);
+        listEl.appendChild(listEntry);               
     }
 }
