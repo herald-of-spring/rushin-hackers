@@ -41,7 +41,8 @@ function runSearch() {
         //apiurl = fetch for ticketmaster shows by location goes here for searchEl.value
     }
     if (searchFormat === "genre") {
-        apiUrl = "https://api.spotify.com/v1/search?q=genre:" + searchEl.value;//apiurl = fetch for spotify by genre using genreEl.value goes here
+        apiUrl = "https://api.spotify.com/v1/search?q=genre:" + searchEl.value;
+        nowURL(apiUrl);//apiurl = fetch for spotify by genre using genreEl.value goes here
     }
     if (searchFormat === "band") {
         fetch("https://api.spotify.com/v1/search?q=artist:" + searchEl.value + "&type=artist", {
@@ -56,13 +57,15 @@ function runSearch() {
                 genreType = data.artists.items[0].genres[0];
                 console.log(genreType);
                 apiUrl =  "https://api.spotify.com/v1/search?q=genre:" + genreType;
+                nowURL(apiUrl);
             })}
         })
         
         //runs search for genres linked to searchEl.value and apiurl = fetches from spotify with that genre
     }
     console.log(apiUrl);
-    fetch(apiUrl + "&type=track", {
+}
+function nowURL(apiUrl) {fetch(apiUrl + "&type=track", {
         headers: {
             "Authorization": "Bearer " + token
         }
