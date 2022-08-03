@@ -38,7 +38,6 @@ function runSearch() {
     event.preventDefault();
     var apiUrl;
     searchFormat=formatEl.value;
-    saveRecent(searchEl.value);
     if (searchFormat === "location") {
         fetch("https://app.ticketmaster.com/discovery/v2/events.json?classificationName=music&city=" + searchEl.value + "&apikey=" + apiKEY)
         .then(function (response) {
@@ -74,6 +73,7 @@ function runSearch() {
         //runs search for genres linked to searchEl.value and apiurl = fetches from spotify with that genre
     }
     console.log(apiUrl);
+    localStorage.setItem("lastSearch", JSON.stringify(search));
 }
 function nowURL(apiUrl) {fetch(apiUrl + "&type=track", {
         headers: {
