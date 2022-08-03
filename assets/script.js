@@ -102,23 +102,27 @@ var displayResults = function(results) {
         var bandName = results[i].artists[0].name;        
         var listEntry = document.createElement('div');
         var titleEl = document.createElement("span");
-        titleEl.textContent = bandName;
+        titleEl.textContent = "";
         listEntry.appendChild(titleEl);
         var purchase = "https://www.ticketmaster.com/search?q=" + bandName
         var purchaseEl = document.createElement('a');
         purchaseEl.textContent = "Buy tickets here!";
         purchaseEl.setAttribute("href", purchase);
+        purchaseEl.setAttribute("class", "link-custom")
         listEntry.appendChild(purchaseEl);
         var songEl = document.createElement('iframe'); //will be Andy's iframe player, probably the small one of the two. Would populate with the search text being bandname.
         songEl.width = "300";
         songEl.height = "80";
         songEl.loading = "lazy";
         songEl.class = "iframe";
-        songEl.style.border = "no";
+        songEl.setAttribute("border", "no");
         songEl.src = "https://open.spotify.com/embed/track/" + results[i].id;
         listEntry.appendChild(songEl);
         listEl.appendChild(listEntry);               
     }
+    var url = results[0].album.images[0].url;
+    var string = "background-image: url(" + url + ")";
+    document.getElementById("cd").setAttribute("style", string);
 }
 //running ticketmaster things
 var ticketMaster = function(data) {
@@ -131,6 +135,7 @@ var ticketMaster = function(data) {
         listEntry.appendChild(titleEl);
         var purchase = data._embedded.events[i]._embedded.attractions[0].url
         var purchaseEl = document.createElement('a');
+        purchaseEl.setAttribute("class", "link-custom");
         purchaseEl.textContent = "Buy tickets here!";
         purchaseEl.setAttribute("href", purchase);
         listEntry.appendChild(purchaseEl);
@@ -139,7 +144,7 @@ var ticketMaster = function(data) {
         songEl.height = "80";
         songEl.loading = "lazy";
         songEl.class = "iframe";
-        songEl.style.border = "no";
+        songEl.setAttribute("border", "no");
         songFind(bandName, songEl);
         listEl.appendChild(songEl);
         listEl.appendChild(listEntry);
