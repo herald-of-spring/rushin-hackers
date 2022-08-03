@@ -17,7 +17,7 @@ so that I can expand my horizons
 - Stores recent searches locally to for ease of search.
 
 ### Preview of the finished product
-![MusicLover](MusicLoverHome.jpeg?raw=true "MusicLover")
+![MusicLover](./images/DevQuiz-start.jpeg?raw=true "MusicLover")
 
 The webpage can be accessed [here](https://herald-of-spring.github.io/rushin-hackers/)
 
