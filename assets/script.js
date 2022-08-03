@@ -3,7 +3,7 @@ var apiKEY = "v5DBb7VL5CX6hGZ2TywJliIfauNyi2q0";//this is our key for ticketmast
 formatEl=document.querySelector("#formatInput");
 searchEl=document.querySelector("#searchInput");
 genreEl=document.querySelector("#genre");
-btn=document.querySelector("button");
+btn=document.querySelector("#button");
 listEl=document.querySelector("#toAppend");
 //auth function is all Andy's
 function auth() {
@@ -38,7 +38,6 @@ function runSearch() {
     event.preventDefault();
     var apiUrl;
     searchFormat=formatEl.value;
-    saveRecent(searchEl.value);
     if (searchFormat === "location") {
         fetch("https://app.ticketmaster.com/discovery/v2/events.json?classificationName=music&city=" + searchEl.value + "&apikey=" + apiKEY)
         .then(function (response) {
@@ -52,6 +51,7 @@ function runSearch() {
     }
     if (searchFormat === "genre") {
         apiUrl = "https://api.spotify.com/v1/search?q=genre:" + searchEl.value;
+        saveRecent(searchEl.value);
         nowURL(apiUrl);//apiurl = fetch for spotify by genre using genreEl.value goes here
     }
     if (searchFormat === "band") {
@@ -67,6 +67,7 @@ function runSearch() {
                 genreType = data.artists.items[0].genres[0];
                 console.log(genreType);
                 apiUrl =  "https://api.spotify.com/v1/search?q=genre:" + genreType;
+                saveRecent(genreType);
                 nowURL(apiUrl);
             })}
         })
@@ -168,12 +169,12 @@ function loadRecent() {
     document.getElementById("recents-visibility").setAttribute("class", "d-block mt-4");
     document.getElementById("recents-content").textContent = "";
     for (search of recent) {
-      var display = document.createElement('div');
+      var display = document.createElement('button');
       document.getElementById("recents-content").appendChild(display);
       display.textContent = search;
       display.setAttribute("class", "border rounded px-2 py-1 m-2 o-80 bg-light")
-      search.addEventListener("click", function() {
-        nowURL("https://api.spotify.com/v1/search?q=name:" + this.textContent);
+      display.addEventListener("click", function() {
+        nowURL("https://api.spotify.com/v1/search?q=genre:" + this.textContent);
       })
     }
     searchEl.setAttribute("placeholder", recent[0]);    //search bar placeholder updates as you search
