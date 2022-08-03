@@ -38,6 +38,7 @@ function runSearch() {
     event.preventDefault();
     var apiUrl;
     searchFormat=formatEl.value;
+    saveRecent(searchEl.value);
     if (searchFormat === "location") {
         fetch("https://app.ticketmaster.com/discovery/v2/events.json?classificationName=music&city=" + searchEl.value + "&apikey=" + apiKEY)
         .then(function (response) {
@@ -157,3 +158,43 @@ var songFind = function(bandName, songEl) {
             })}
         })
 }
+
+//loads recent searches
+var recent = null;
+function loadRecent() {
+  recent = localStorage.getItem("recent");
+  if (recent != null) {
+    recent = recent.split(",");
+    document.getElementById("recents-visibility").setAttribute("class", "d-block mt-4");
+    document.getElementById("recents-content").textContent = "";
+    for (search of recent) {
+      var display = document.createElement('div');
+      document.getElementById("recents-content").appendChild(display);
+      display.textContent = search;
+      display.setAttribute("class", "border rounded px-2 py-1 m-2 o-80 bg-light")
+      search.addEventListener("click", function() {
+        nowURL("https://api.spotify.com/v1/search?q=name:" + this.textContent);
+      })
+    }
+    searchEl.setAttribute("placeholder", recent[0]);    //search bar placeholder updates as you search
+  }
+}
+loadRecent();    //displays last session at page load
+
+function saveRecent(newSearch) {
+    if (recent === null) {
+      recent = []
+    }
+    for (i in recent) {    //scans for duplicates and removes them
+      if (recent[i] == newSearch) {
+        recent.splice(i, 1);
+        break;
+      }
+    }
+    if (recent.length === 6) {
+      recent.pop();
+    }
+    recent.unshift(newSearch);
+    localStorage.setItem("recent", recent);
+    loadRecent();
+  }
