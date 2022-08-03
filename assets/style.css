@@ -1,6 +1,29 @@
 #genre{
     visibility: hidden;
 }
-#searchResults{
-    float: right;
+
+.bg-custom {
+    background-color: dodgerblue;
+    opacity: 0.8;
+}
+
+.link-custom {
+    color: blueviolet;
+}
+
+.link-custom:hover {
+    color: rgb(97, 24, 165);
+}
+
+.hero {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    --fa-animation-duration: 10s;
+    font-size: 700px;
+    position: fixed;
+    /* opacity: 0.5; */
+    height: fit-content;
+    top: 0;
+    right: -350px;
+    z-index: -1;
 }

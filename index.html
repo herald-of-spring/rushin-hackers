@@ -4,31 +4,31 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/d07fe58864.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="./assets/style.css" />
   <title>Document</title>
 </head>
 <body>
-  <form>
-    <input id="searchInput" placeholder="Search by band, genre or location here!">
-    <select id="formatInput">
-      <option value="location">Location</option>
-      <option value="genre">Genre</option>
-      <option value="band">Band</option>
-    </select>
-    <!--<select id="genre">
-      <option value="blues">Blues</option>
-      <option value="pop">Pop</option>
-      <option value="rock">Rock</option>
-      <option value="electronic">Electronic</option>
-    </select>-->
-    <button>Search</button>
-  </form>
-  <div id="searchResults">
-    <ul id="toAppend"></ul>
-  </div>
-  <div id="recents-visibility" class="d-none">
-    <h3 class="text-center text-light">Your Recent Searches</h3>
-    <div id="recents-content" class="d-flex justify-content-center align-itmes-start flex-wrap m-auto text-light"></div>
+  <i id="cd" class="fa-solid fa-compact-disc fa-spin hero"></i>
+  <div class="d-flex min-vh-100 bg-custom flex-column align-items-center">
+    <h1 class="display-2 text-center text-light my-3" style="font-family: 'Poppins'"><strong>Music Lover</strong></h1>
+    <form class="form-inline my-2 my-lg-0">
+      <input id="searchInput" class="form-control mr-sm-2" placeholder="Search by location, genre, or band" aria-label="Search">
+      <select id="formatInput" class="mr-3">
+        <option value="location">Location</option>
+        <option value="genre">Genre</option>
+        <option value="band">Band</option>
+      </select>
+      <button id="button" class="btn btn-outline-light my-2 my-sm-0">Search</button>
+    </form>
+    <div id="recents-visibility" class="d-none">
+      <h3 class="text-center text-light">Your Recent Searches</h3>
+      <div id="recents-content" class="d-flex justify-content-center align-itmes-start flex-wrap m-auto text-light"></div>
+    </div>
+    <div id="searchResults" class="text-left">
+      <ul id="toAppend"></ul>
+    </div>
   </div>
 </body>
 

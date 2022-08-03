@@ -3,7 +3,7 @@ var apiKEY = "v5DBb7VL5CX6hGZ2TywJliIfauNyi2q0";//this is our key for ticketmast
 formatEl=document.querySelector("#formatInput");
 searchEl=document.querySelector("#searchInput");
 genreEl=document.querySelector("#genre");
-btn=document.querySelector("button");
+btn=document.querySelector("#button");
 listEl=document.querySelector("#toAppend");
 //auth function is all Andy's
 function auth() {
@@ -51,6 +51,7 @@ function runSearch() {
     }
     if (searchFormat === "genre") {
         apiUrl = "https://api.spotify.com/v1/search?q=genre:" + searchEl.value;
+        saveRecent(searchEl.value);
         nowURL(apiUrl);//apiurl = fetch for spotify by genre using genreEl.value goes here
     }
     if (searchFormat === "band") {
@@ -66,6 +67,7 @@ function runSearch() {
                 genreType = data.artists.items[0].genres[0];
                 console.log(genreType);
                 apiUrl =  "https://api.spotify.com/v1/search?q=genre:" + genreType;
+                saveRecent(genreType);
                 nowURL(apiUrl);
             })}
         })
@@ -101,23 +103,27 @@ var displayResults = function(results) {
         var bandName = results[i].artists[0].name;        
         var listEntry = document.createElement('div');
         var titleEl = document.createElement("span");
-        titleEl.textContent = bandName;
+        titleEl.textContent = "";
         listEntry.appendChild(titleEl);
         var purchase = "https://www.ticketmaster.com/search?q=" + bandName
         var purchaseEl = document.createElement('a');
         purchaseEl.textContent = "Buy tickets here!";
         purchaseEl.setAttribute("href", purchase);
+        purchaseEl.setAttribute("class", "link-custom")
         listEntry.appendChild(purchaseEl);
         var songEl = document.createElement('iframe'); //will be Andy's iframe player, probably the small one of the two. Would populate with the search text being bandname.
         songEl.width = "300";
         songEl.height = "80";
         songEl.loading = "lazy";
         songEl.class = "iframe";
-        songEl.style.border = "no";
+        songEl.setAttribute("border", "no");
         songEl.src = "https://open.spotify.com/embed/track/" + results[i].id;
         listEntry.appendChild(songEl);
         listEl.appendChild(listEntry);               
     }
+    var url = results[0].album.images[0].url;
+    var string = "background-image: url(" + url + ")";
+    document.getElementById("cd").setAttribute("style", string);
 }
 //running ticketmaster things
 var ticketMaster = function(data) {
@@ -130,6 +136,7 @@ var ticketMaster = function(data) {
         listEntry.appendChild(titleEl);
         var purchase = data._embedded.events[i]._embedded.attractions[0].url
         var purchaseEl = document.createElement('a');
+        purchaseEl.setAttribute("class", "link-custom");
         purchaseEl.textContent = "Buy tickets here!";
         purchaseEl.setAttribute("href", purchase);
         listEntry.appendChild(purchaseEl);
@@ -138,7 +145,7 @@ var ticketMaster = function(data) {
         songEl.height = "80";
         songEl.loading = "lazy";
         songEl.class = "iframe";
-        songEl.style.border = "no";
+        songEl.setAttribute("border", "no");
         songFind(bandName, songEl);
         listEl.appendChild(songEl);
         listEl.appendChild(listEntry);
@@ -168,12 +175,12 @@ function loadRecent() {
     document.getElementById("recents-visibility").setAttribute("class", "d-block mt-4");
     document.getElementById("recents-content").textContent = "";
     for (search of recent) {
-      var display = document.createElement('div');
+      var display = document.createElement('button');
       document.getElementById("recents-content").appendChild(display);
       display.textContent = search;
       display.setAttribute("class", "border rounded px-2 py-1 m-2 o-80 bg-light")
-      search.addEventListener("click", function() {
-        nowURL("https://api.spotify.com/v1/search?q=name:" + this.textContent);
+      display.addEventListener("click", function() {
+        nowURL("https://api.spotify.com/v1/search?q=genre:" + this.textContent);
       })
     }
     searchEl.setAttribute("placeholder", recent[0]);    //search bar placeholder updates as you search
