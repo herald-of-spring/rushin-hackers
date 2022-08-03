@@ -1,4 +1,5 @@
 var token;
+var apiKEY = "v5DBb7VL5CX6hGZ2TywJliIfauNyi2q0";//this is our key for ticketmaster calls
 formatEl=document.querySelector("#formatInput");
 searchEl=document.querySelector("#searchInput");
 genreEl=document.querySelector("#genre");
@@ -38,7 +39,15 @@ function runSearch() {
     var apiUrl;
     searchFormat=formatEl.value;
     if (searchFormat === "location") {
-        //apiurl = fetch for ticketmaster shows by location goes here for searchEl.value
+        fetch("https://app.ticketmaster.com/discovery/v2/events.json?classificationName=music&city=" + searchEl.value + "&apikey=" + apiKEY)
+        .then(function (response) {
+            console.log(response.status);
+            return response.json();
+        })
+        .then(function (data) {
+            console.log(data);
+            ticketMaster(data);
+        })
     }
     if (searchFormat === "genre") {
         apiUrl = "https://api.spotify.com/v1/search?q=genre:" + searchEl.value;
@@ -93,11 +102,11 @@ var displayResults = function(results) {
         var titleEl = document.createElement("span");
         titleEl.textContent = bandName;
         listEntry.appendChild(titleEl);
-        //var purchase = generate link to ticketmaster with search for band
-        //var purchaseEl = document.createElement('button');
-        //purchaseEl.textContent = "Buy tickets here!";
-        //purchaseEl.setAttribute("href", purchase);
-        //listEntry.appendChild(purchaseEl);
+        var purchase = "https://www.ticketmaster.com/search?q=" + bandName
+        var purchaseEl = document.createElement('a');
+        purchaseEl.textContent = "Buy tickets here!";
+        purchaseEl.setAttribute("href", purchase);
+        listEntry.appendChild(purchaseEl);
         var songEl = document.createElement('iframe'); //will be Andy's iframe player, probably the small one of the two. Would populate with the search text being bandname.
         songEl.width = "300";
         songEl.height = "80";
@@ -108,4 +117,43 @@ var displayResults = function(results) {
         listEntry.appendChild(songEl);
         listEl.appendChild(listEntry);               
     }
+}
+//running ticketmaster things
+var ticketMaster = function(data) {
+    listEl.innerHTML = "";
+    for (i = 0; i< 5; i++) {
+        var bandName = data._embedded.events[i]._embedded.attractions[0].name;        
+        var listEntry = document.createElement('div');
+        var titleEl = document.createElement("span");
+        titleEl.textContent = bandName;
+        listEntry.appendChild(titleEl);
+        var purchase = data._embedded.events[i]._embedded.attractions[0].url
+        var purchaseEl = document.createElement('a');
+        purchaseEl.textContent = "Buy tickets here!";
+        purchaseEl.setAttribute("href", purchase);
+        listEntry.appendChild(purchaseEl);
+        var songEl = document.createElement('iframe');
+        songEl.width = "300";
+        songEl.height = "80";
+        songEl.loading = "lazy";
+        songEl.class = "iframe";
+        songEl.style.border = "no";
+        songFind(bandName, songEl);
+        listEl.appendChild(songEl);
+        listEl.appendChild(listEntry);
+    }
+}
+var songFind = function(bandName, songEl) {
+    fetch("https://api.spotify.com/v1/search?q=artist:" + bandName + "&type=track", {
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        })    
+        .then(function (response) {
+            if (response.ok) {
+              response.json().then(function (data) {
+                console.log(data);        
+                songEl.src = "https://open.spotify.com/embed/track/" + data.tracks.items[0].id; 
+            })}
+        })
 }
